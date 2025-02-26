@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Editor</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <style>
+        .ql-editor img {
+            max-width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Blog Editor</h1>
+    <button id="loginButton" onclick="login()" style="display: none;">Login</button>
+    <button id="logoutButton" onclick="logout()" style="display: none;">Logout</button>
+    <p id="userStatus">Nicht eingeloggt</p>
+    
+    <h2>Neue Headline</h2>
+    <input type="text" id="headline" placeholder="Überschrift">
+    <div id="editor"></div>
+    <button id="saveButton" onclick="savePost()">Speichern</button>
+    
+    <h2>Beiträge</h2>
+    <ul id="postsList"></ul>
+    
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDi9zN-bJkBfFUljFMOSHsw1uFMvgi_0vs",
+            authDomain: "stefanbozkurt.firebaseapp.com",
+            projectId: "stefanbozkurt",
+            storageBucket: "stefanbozkurt.appspot.com",
+            messagingSenderId: "711424993272",
+            appId: "1:711424993272:web:f0e847eb9ba6937567980d"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+        const quill = new Quill('#editor', { 
+            theme: 'snow',
+            modules: {
+                toolbar: {
+                    container: [['bold', 'italic', 'underline'], [{ 'header': [1, 2, false] }], ['image']],
+                    handlers: {
+                        'image': imageHandler
+                    }
+                }
+            }
+        });
+
+        function imageHandler() {
+            const url = prompt("Bitte Bild-URL eingeben:");
+            if (url) {
+                const range = quill.getSelection();
+                quill.insertEmbed(range.index, 'image', url);
+                setTimeout(() => resizeImages(), 100);
+            }
+        }
+
+        function resizeImages() {
+            document.querySelectorAll('.ql-editor img').forEach(img => {
+                img.style.maxWidth = "500px";
+                img.style.height = "auto";
+            });
+        }
+
+        auth.onAuthStateChanged(user => {
+            document.getElementById('userStatus').innerText = user ? `Eingeloggt als ${user.email}` : 'Nicht eingeloggt';
+            document.getElementById('loginButton').style.display = user ? 'none' : 'block';
+            document.getElementById('logoutButton').style.display = user ? 'block' : 'none';
+            loadPosts();
+        });
+
+        function login() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider);
+        }
+        
+        function logout() {
+            auth.signOut();
+        }
+
+        function savePost() {
+            const user = auth.currentUser;
+            if (!user) return alert("Bitte einloggen");
+            const headline = document.getElementById("headline").value;
+            const content = quill.root.innerHTML;
+            
+            db.collection("posts").add({
+                user: user.email,
+                headline,
+                content,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            resetEditor();
+        }
+
+        function loadPosts() {
+            db.collection("posts").orderBy("timestamp", "desc").onSnapshot(snapshot => {
+                const list = document.getElementById("postsList");
+                list.innerHTML = "";
+                snapshot.forEach(doc => {
+                    const post = doc.data();
+                    const safeHeadline = encodeURIComponent(post.headline);
+                    const safeContent = encodeURIComponent(post.content);
+                    const li = document.createElement("li");
+                    li.innerHTML = `<strong>${post.headline}</strong> - ${post.user} 
+                        <button onclick="editPost('${doc.id}', decodeURIComponent('${safeHeadline}'), decodeURIComponent('${safeContent}'))">Bearbeiten</button>
+                        <button onclick="deletePost('${doc.id}')">Löschen</button>`;
+                    list.appendChild(li);
+                });
+            });
+        }
+
+        function editPost(id, headline, content) {
+            document.getElementById("headline").value = headline;
+            quill.root.innerHTML = content;
+            resizeImages();
+            
+            const saveButton = document.getElementById("saveButton");
+            saveButton.innerText = "Update";
+            saveButton.setAttribute("onclick", `updatePost('${id}')`);
+        }
+
+        function updatePost(id) {
+            const headline = document.getElementById("headline").value;
+            const content = quill.root.innerHTML;
+            db.collection("posts").doc(id).update({ headline, content });
+            resetEditor();
+        }
+
+        function deletePost(id) {
+            if (confirm("Möchtest du diesen Beitrag wirklich löschen?")) {
+                db.collection("posts").doc(id).delete();
+            }
+        }
+
+        function resetEditor() {
+            document.getElementById("headline").value = "";
+            quill.root.innerHTML = "";
+            const saveButton = document.getElementById("saveButton");
+            saveButton.innerText = "Speichern";
+            saveButton.setAttribute("onclick", "savePost()");
+        }
+    </script>
+</body>
+</html>

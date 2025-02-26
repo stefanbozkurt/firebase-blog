@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Beitrag</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <h1 id="postHeadline"></h1>
+    <div id="postContent"></div>
+    <a href="listing.html">Zurück zur Übersicht</a>
+
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyDi9zN-bJkBfFUljFMOSHsw1uFMvgi_0vs",
+            authDomain: "stefanbozkurt.firebaseapp.com",
+            projectId: "stefanbozkurt",
+            storageBucket: "stefanbozkurt.appspot.com",
+            messagingSenderId: "711424993272",
+            appId: "1:711424993272:web:f0e847eb9ba6937567980d"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+
+        function getPostIdFromURL() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get("id");
+        }
+
+        function loadPost() {
+            const postId = getPostIdFromURL();
+            if (!postId) {
+                document.body.innerHTML = "<h1>Beitrag nicht gefunden.</h1>";
+                return;
+            }
+
+            db.collection("posts").doc(postId).get().then(doc => {
+                if (doc.exists) {
+                    const post = doc.data();
+                    document.getElementById("postHeadline").innerText = post.headline;
+                    document.getElementById("postContent").innerHTML = post.content;
+                } else {
+                    document.body.innerHTML = "<h1>Beitrag nicht gefunden.</h1>";
+                }
+            });
+        }
+
+        loadPost();
+    </script>
+</body>
+</html>
