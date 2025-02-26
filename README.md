@@ -20,7 +20,7 @@ Dieses Projekt ist eine einfache Blog-Anwendung, die mit Firebase Firestore für
 
 ## Datei-Struktur
 
-
+```
 📂 firebase-blog
  ├── 📄 index.html          # Hauptseite mit Editor und Login
  ├── 📄 listing.html        # Übersicht aller Blog-Posts
@@ -28,7 +28,7 @@ Dieses Projekt ist eine einfache Blog-Anwendung, die mit Firebase Firestore für
  ├── 📄 styles.css          # Styling der Seiten
  ├── 📄 script.js           # Firebase und QuillJS Logik
  ├── 📄 README.md           # Projekt-Dokumentation
-
+```
 
 ## Seiten und Funktionen
 1. **index.html** (Blog Editor)
