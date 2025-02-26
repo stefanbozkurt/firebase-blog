@@ -1,4 +1,3 @@
-```markdown
 # Firebase Blog Projekt
 
 ## Einleitung
@@ -21,7 +20,7 @@ Dieses Projekt ist eine einfache Blog-Anwendung, die mit Firebase Firestore für
 
 ## Datei-Struktur
 
-```
+
 📂 firebase-blog
  ├── 📄 index.html          # Hauptseite mit Editor und Login
  ├── 📄 listing.html        # Übersicht aller Blog-Posts
@@ -29,7 +28,7 @@ Dieses Projekt ist eine einfache Blog-Anwendung, die mit Firebase Firestore für
  ├── 📄 styles.css          # Styling der Seiten
  ├── 📄 script.js           # Firebase und QuillJS Logik
  ├── 📄 README.md           # Projekt-Dokumentation
-```
+
 
 ## Seiten und Funktionen
 1. **index.html** (Blog Editor)
@@ -45,19 +44,19 @@ Dieses Projekt ist eine einfache Blog-Anwendung, die mit Firebase Firestore für
 
 ## Firestore Datenstruktur
 
-```
+
 📂 posts (Collection)
    ├── 📄 POST_ID (Dokument)
        ├── headline: "Post Titel"
        ├── content: "HTML-Inhalt aus dem Editor"
        ├── user: "Benutzer Email"
        ├── timestamp: "Erstellungszeitpunkt"
-```
+
 
 ## Sicherheit (Firestore Regeln)
 Stelle sicher, dass Firestore nur authentifizierten Nutzern das Schreiben erlaubt:
 
-```
+
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -67,7 +66,7 @@ service cloud.firestore {
     }
   }
 }
-```
+
 
 ## Hosting
 Das Projekt kann mit Firebase Hosting oder GitHub Pages gehostet werden.
@@ -79,4 +78,3 @@ Firebase Hosting Setup:
 
 ## Fazit
 Dieses Projekt demonstriert die Integration von Firebase Firestore, Authentication und Quill.js zur Erstellung eines einfachen Blogs mit Login, Beitragserstellung und -verwaltung. Anpassungen und Erweiterungen, wie z. B. Kategorien oder Kommentare, können einfach hinzugefügt werden.
-```
