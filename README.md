@@ -44,19 +44,19 @@ Dieses Projekt ist eine einfache Blog-Anwendung, die mit Firebase Firestore für
 
 ## Firestore Datenstruktur
 
-
+```
 📂 posts (Collection)
    ├── 📄 POST_ID (Dokument)
        ├── headline: "Post Titel"
        ├── content: "HTML-Inhalt aus dem Editor"
        ├── user: "Benutzer Email"
        ├── timestamp: "Erstellungszeitpunkt"
-
+```
 
 ## Sicherheit (Firestore Regeln)
 Stelle sicher, dass Firestore nur authentifizierten Nutzern das Schreiben erlaubt:
 
-
+```
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -66,7 +66,7 @@ service cloud.firestore {
     }
   }
 }
-
+```
 
 ## Hosting
 Das Projekt kann mit Firebase Hosting oder GitHub Pages gehostet werden.
