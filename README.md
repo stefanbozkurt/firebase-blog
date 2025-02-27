@@ -1,3 +1,6 @@
+Hier ist der Text in Raw Markdown-Format:
+
+```markdown
 # Firebase Blog Projekt
 
 ## Einleitung
@@ -78,3 +81,4 @@ Firebase Hosting Setup:
 
 ## Fazit
 Dieses Projekt demonstriert die Integration von Firebase Firestore, Authentication und Quill.js zur Erstellung eines einfachen Blogs mit Login, Beitragserstellung und -verwaltung. Anpassungen und Erweiterungen, wie z. B. Kategorien oder Kommentare, können einfach hinzugefügt werden.
+```
