@@ -9,6 +9,7 @@ Dieses Projekt ist eine einfache Blog-Anwendung, die mit Firebase Firestore für
 * **Bearbeiten und Löschen** von Beiträgen
 * **Bilder über URL einfügen**
 * **Post-Listing auf listing.html** mit Links zu Einzelposts auf post.html
+* **Live-Aktualisierung der Beiträge durch Firestore onSnapshot**
 
 ## Installation
 1. **Firebase Projekt einrichten**
@@ -16,7 +17,7 @@ Dieses Projekt ist eine einfache Blog-Anwendung, die mit Firebase Firestore für
    * Erstelle ein neues Projekt
    * Aktiviere Firestore-Datenbank und Authentication (Google Login aktivieren)
 2. **Firebase Konfiguration in das Projekt einfügen**
-   * Ersetze die `firebaseConfig` in `index.html` mit den eigenen Firebase-Konfigurationsdaten.
+   * Ersetze die `firebaseConfig` in `script.js` mit den eigenen Firebase-Konfigurationsdaten.
 
 ## Datei-Struktur
 
@@ -32,15 +33,17 @@ Dieses Projekt ist eine einfache Blog-Anwendung, die mit Firebase Firestore für
 
 ## Seiten und Funktionen
 1. **index.html** (Blog Editor)
-* Login/Logout mit Google
-* Quill Rich-Text-Editor für Blog-Posts
-* Speicherung der Beiträge in Firestore
-* Anzeige aller Posts mit Bearbeiten- und Löschen-Funktion
+   * Login/Logout mit Google
+   * Quill Rich-Text-Editor für Blog-Posts
+   * Speicherung der Beiträge in Firestore
+   * Anzeige aller Posts mit Bearbeiten- und Löschen-Funktion
 2. **listing.html** (Post-Übersicht)
-* Listet alle Beiträge mit Titeln auf
-* Jeder Titel verlinkt zur `post.html?id=POST_ID`
+   * Listet alle Beiträge mit Titeln auf
+   * Jeder Titel verlinkt zur `post.html?id=POST_ID`
+   * Live-Aktualisierung der Liste durch Firestore
 3. **post.html** (Einzel-Post Ansicht)
-* Lädt und zeigt nur den angeforderten Post basierend auf der URL-Parameter-ID (`id=POST_ID`)
+   * Lädt und zeigt nur den angeforderten Post basierend auf der URL-Parameter-ID (`id=POST_ID`)
+   * Unterstützt formatierte Inhalte dank Quill.js
 
 ## Firestore Datenstruktur
 
@@ -78,4 +81,3 @@ Firebase Hosting Setup:
 
 ## Fazit
 Dieses Projekt demonstriert die Integration von Firebase Firestore, Authentication und Quill.js zur Erstellung eines einfachen Blogs mit Login, Beitragserstellung und -verwaltung. Anpassungen und Erweiterungen, wie z. B. Kategorien oder Kommentare, können einfach hinzugefügt werden.
-```
