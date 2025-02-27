@@ -147,6 +147,12 @@ function savePost() {
 function resetEditor() {
     document.getElementById("headline").value = "";
     quill.root.innerHTML = "";
+
+    const saveButton = document.getElementById("saveButton");
+    if (saveButton) {
+        saveButton.innerText = "Speichern";
+        saveButton.onclick = savePost;
+    }
 }
 
 // Beiträge laden und mit Bearbeiten/Löschen-Buttons versehen
