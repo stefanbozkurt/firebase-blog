@@ -1,6 +1,3 @@
-Hier ist der Text in Raw Markdown-Format:
-
-```markdown
 # Firebase Blog Projekt
 
 ## Einleitung
